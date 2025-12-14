@@ -1,6 +1,6 @@
-# SplitIn
+# splitin
 
-SplitIn is a simple and intuitive **bill splitting app** built for Android using **Kotlin**, **Jetpack Compose**, and **Firebase**. The app allows users to track shared expenses, simplify debts, and manage contributions within groups.
+splitin is a simple and intuitive **bill splitting app** built for Android using **Kotlin**, **Jetpack Compose**, and **Firebase**. The app allows users to track shared expenses, simplify debts, and manage contributions within groups.
 
 ---
 
@@ -27,7 +27,7 @@ SplitIn is a simple and intuitive **bill splitting app** built for Android using
 
 ## Screenshots
 
-![Home Screen](Screenshots/home_screen.jpg)  
+<!-- ![Home Screen](Screenshots/home_screen.jpg)  
 ![Group Expenses Screen](Screenshots/group_expenses.png)
-![Group Debts Screen](Screenshots/group_debts.png)  
+![Group Debts Screen](Screenshots/group_debts.png)   -->
 
