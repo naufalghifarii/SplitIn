@@ -20,7 +20,7 @@ splitin is a simple and intuitive **bill splitting app** built for Android using
 - **Language:** Kotlin  
 - **Architecture:** MVVM (Model-View-ViewModel)  
 - **UI:** Jetpack Compose + Material3  
-- **Backend / Auth:** Firebase (Authentication, Firestore)  
+<!--- **Backend / Auth:** Firebase (Authentication, Firestore)  -->
 - **Image Loading:** Coil  
 
 ---
