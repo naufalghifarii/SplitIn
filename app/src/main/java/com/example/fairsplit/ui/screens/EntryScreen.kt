@@ -29,6 +29,9 @@ import androidx.navigation.NavController
 import com.example.fairsplit.ui.theme.FairSplitTheme
 import com.example.fairsplit.ui.theme.poppinsFontFamily
 
+/**
+ * Layar entry/landing sederhana (login/daftar/Google) yang menampilkan nama aplikasi.
+ */
 @Composable
 fun EntryScreen(navController: NavController) {
 
@@ -81,7 +84,7 @@ fun EntryScreenContent(
 
         Column(modifier = Modifier.weight(1f)) {
 
-            // Log In Button
+            // Tombol Log In
             Button(
                 onClick = {
 
@@ -100,7 +103,7 @@ fun EntryScreenContent(
                 )
             }
 
-            // Sign Up Button
+            // Tombol Sign Up
             Button(
                 onClick = {
 
@@ -119,7 +122,7 @@ fun EntryScreenContent(
                 )
             }
 
-            // Google Button
+            // Tombol Google
             Button(
                 onClick = {
 

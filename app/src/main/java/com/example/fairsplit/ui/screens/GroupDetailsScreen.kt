@@ -1,4 +1,5 @@
 package com.example.fairsplit.ui.screens
+package com.example.fairsplit.ui.screens
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -66,6 +67,10 @@ import com.example.fairsplit.ui.theme.FairSplitTheme
 import kotlin.math.abs
 import com.example.fairsplit.util.formatCurrency
 
+/**
+ * Layar detail grup yang menampilkan header grup, tab untuk Expenses/Debts/Contributions
+ * serta dialog untuk menambah pengeluaran.
+ */
 @Composable
 fun GroupDetailsScreen(navController: NavController,
                        groupViewModel: GroupViewModel,
@@ -74,6 +79,7 @@ fun GroupDetailsScreen(navController: NavController,
     val groupState = groupViewModel.selectedGroup.collectAsState()
     val group = groupState.value
 
+    // Saat grup berubah, muat data hutang ke viewmodel debt
     LaunchedEffect(group) {
         group?.let { debtViewModel.loadGroupData(it) }
     }
@@ -82,7 +88,7 @@ fun GroupDetailsScreen(navController: NavController,
     val simplifiedDebts by debtViewModel.simplifiedDebts.collectAsState()
     val rawDebts by debtViewModel.rawDebts.collectAsState()
 
-    // If group is null, avoid crash (shouldn't happen if navigated correctly)
+    // Jika grup tidak null, tampilkan konten utama
     group?.let {
         GroupDetailsScreenContent(
             onBackButtonClick = {navController.popBackStack()},
@@ -271,6 +277,9 @@ fun GroupDetailsScreenContent(
 
 
 
+/**
+ * Panel yang menampilkan daftar pengeluaran (expenses) yang dikelompokkan berdasarkan tanggal.
+ */
 @Composable
 fun ExpensesPanel(expenseList: List<ExpenseModel>, onExpenseClick: () -> Unit) {
     var expandedExpenseId by remember { mutableStateOf<Int?>(null) }
@@ -307,6 +316,9 @@ fun ExpensesPanel(expenseList: List<ExpenseModel>, onExpenseClick: () -> Unit) {
     }
 }
 
+/**
+ * Item yang merepresentasikan satu baris pengeluaran; bisa diperluas untuk melihat rinciannya.
+ */
 @Composable
 fun ExpenseListItem(
     expense: ExpenseModel,
@@ -399,9 +411,13 @@ fun ExpenseListItem(
 
     }
 
+
 }
 
 
+/**
+ * Panel yang menampilkan breakdown hutang baik dalam bentuk simplified maupun raw.
+ */
 @Composable
 fun OwedBreakdownPanel(
     simplifiedDebts: List<DebtRecordModel>,
@@ -519,12 +535,18 @@ fun OwedBreakdownPanel(
 }
 
 
-
+/**
+ * Placeholder untuk panel kontribusi (masih kosong saat ini).
+ */
 @Composable
 fun ContributionPanel(group: GroupModel) {
     Surface {  }
 }
 
+/**
+ * Dialog sederhana untuk menambah pengeluaran baru ke grup.
+ * Membangun `ExpenseModel` berdasarkan input pengguna dan memanggil `onSave`.
+ */
 @Composable
 fun AddExpenseDialog(
     group: GroupModel,
@@ -631,6 +653,9 @@ fun AddExpenseDialog(
     }
 }
 
+/**
+ * Ubah kategori menjadi emoji untuk tampilan ringkas.
+ */
 fun categoryToEmoji(category: String): String {
     return when (category.lowercase()) {
         "food" -> "🍔"

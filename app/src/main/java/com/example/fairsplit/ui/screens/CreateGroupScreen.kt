@@ -49,6 +49,10 @@ import com.example.fairsplit.ViewModels.GroupViewModel
 import com.example.fairsplit.R
 import com.example.fairsplit.ui.theme.FairSplitTheme
 
+/**
+ * Layar pembuatan grup baru. Memungkinkan memasukkan judul, memilih mata uang,
+ * dan menambahkan anggota grup.
+ */
 @Composable
 fun CreateGroupScreen(navController: NavController, groupViewModel: GroupViewModel) {
     var title by remember { mutableStateOf("") }
@@ -218,6 +222,9 @@ fun CreateGroupScreenContent(
     }
 }
 
+/**
+ * Komponen pemilih mata uang sederhana.
+ */
 @Composable
 fun CurrencySelector(
     selectedCurrency: String,
@@ -297,6 +304,9 @@ fun CurrencySelector(
     }
 }
 
+/**
+ * Section untuk menambah orang ke dalam grup.
+ */
 @Composable
 fun PeopleEntrySection(
     currentPeopleList: List<String>,

@@ -53,6 +53,12 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.example.fairsplit.util.formatCurrency
 
+/**
+ * Layar utama yang menampilkan daftar grup.
+ *
+ * - `HomeScreen` mengambil data dari `GroupViewModel` dan meneruskan ke `HomeScreenContent`.
+ * - `HomeScreenContent` mengatur layout, top bar, bottom bar, dan daftar grup.
+ */
 @Composable
 fun HomeScreen(navController: NavController,
                groupViewModel: GroupViewModel) {
@@ -174,6 +180,9 @@ fun HomeScreenContent(
     }
 }
 
+/**
+ * Item kartu untuk menampilkan ringkasan sebuah grup pada daftar.
+ */
 @Composable
 fun GroupItem(group: GroupModel, onClick: (GroupModel) -> Unit) {
     Card(modifier = Modifier
@@ -233,6 +242,9 @@ fun GroupItem(group: GroupModel, onClick: (GroupModel) -> Unit) {
 
 }
 
+/**
+ * Format timestamp (Long) menjadi tanggal yang mudah dibaca.
+ */
 fun FormatDate(dateLong: Long) : String {
     val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     val formattedDate = formatter.format(dateLong)

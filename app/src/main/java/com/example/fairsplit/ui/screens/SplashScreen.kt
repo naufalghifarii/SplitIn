@@ -28,19 +28,30 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(navController: NavController){
 
-    // LaunchedEffect for navigation after a delay
+    /**
+     * Halaman splash sederhana.
+     *
+     * - Menjalankan `LaunchedEffect` untuk menunggu beberapa detik lalu
+     *   melakukan navigasi ke layar utama (`home`).
+     * - Menggunakan `popUpTo` agar splash tidak tersimpan di back stack.
+     */
     LaunchedEffect(key1 = Unit) {
-        delay(2000) // 3 seconds delay
+        delay(2000) // 2 seconds delay
         navController.navigate("home") { // Replace with your target screen route
             popUpTo("splash") { inclusive = true } // Optionally pop up from the back stack
         }
     }
 
+    // Tampilkan konten visual splash
     SplashScreenContent()
 }
 
 @Composable
 fun SplashScreenContent(){
+    /**
+     * Konten visual splash: logo, nama aplikasi, dan subjudul.
+     * Menggunakan tema warna dari `MaterialTheme`.
+     */
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
@@ -50,12 +61,11 @@ fun SplashScreenContent(){
         Column (
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //Logo
+            // Logo aplikasi
             AppLogo()
 
-            //App Name
+            // Nama aplikasi dengan styling sebagian berwarna primary
             Text(
-//                text = "FairSplit",
                 text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
@@ -71,6 +81,7 @@ fun SplashScreenContent(){
                 modifier = Modifier.padding(top = 16.dp)
             )
 
+            // Subjudul singkat di bawah nama aplikasi
             Text(
                 text = "Fair & Square - The Easiest Way to Split",
                 textAlign = TextAlign.Center,
@@ -85,6 +96,10 @@ fun SplashScreenContent(){
 
 @Composable
 fun AppLogo(isDarkTheme: Boolean = isSystemInDarkTheme()) {
+    /**
+     * Pilih logo sesuai tema (dark/light) lalu tampilkan.
+     * @param isDarkTheme Nilai default mengambil dari sistem.
+     */
     val logoResId = if (isDarkTheme) {
         R.drawable.logo_dark
     } else {

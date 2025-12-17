@@ -1,9 +1,16 @@
-package com.example.fairsplit.sampledata
+package com.example.fairsplit
 
 import com.example.fairsplit.DataModels.GroupModel
 import com.example.fairsplit.DataModels.ExpenseModel
 import com.example.fairsplit.DataModels.SplitExpenseModel
 
+/**
+ * Data contoh (mock) untuk pengembangan dan pengujian UI.
+ *
+ * Variabel `sampleGroups` berisi daftar grup contoh dengan member dan
+ * riwayat pengeluaran sehingga layar dapat menampilkan informasi tanpa
+ * perlu sumber data eksternal.
+ */
 val sampleGroups = listOf(
     GroupModel(
         id = 1,

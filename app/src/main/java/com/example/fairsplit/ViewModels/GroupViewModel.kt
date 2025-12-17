@@ -8,19 +8,33 @@ import kotlinx.coroutines.flow.StateFlow
 import com.example.fairsplit.DataModels.GroupModel
 import com.example.fairsplit.sampledata.sampleGroups
 
+/**
+ * ViewModel sederhana untuk mengelola daftar grup dan grup yang dipilih.
+ *
+ * - Menyimpan daftar grup sebagai `StateFlow` agar UI dapat berlangganan perubahan.
+ * - Menyimpan grup yang sedang dipilih (untuk layar detail) juga sebagai `StateFlow`.
+ */
 class GroupViewModel : ViewModel() {
-    // currently selected group (for details screen) exposed as StateFlow so UI can observe changes
+    // Grup yang sedang dipilih; dapat bernilai null jika tidak ada yang dipilih
     private val _selectedGroup = MutableStateFlow<GroupModel?>(null)
     val selectedGroup = _selectedGroup.asStateFlow()
 
-    // Exposed list of groups backed by a MutableStateFlow so UI can observe additions
+    // Daftar grup yang diekspos ke UI; awalnya dari `sampleGroups`
     private val _groups = MutableStateFlow(sampleGroups.toMutableList())
     val groups: StateFlow<List<GroupModel>> = _groups
 
+    /**
+     * Set grup yang sedang dipilih untuk ditampilkan di layar detail.
+     */
     fun selectGroup(group: GroupModel) {
         _selectedGroup.value = group
     }
 
+    /**
+     * Buat grup baru dan tambahkan ke daftar (di posisi paling depan).
+     *
+     * @return grup yang baru dibuat.
+     */
     fun createGroup(name: String, members: List<String>, image: String = "", date: Long = System.currentTimeMillis()): GroupModel {
         val current = _groups.value.toMutableList()
         val newId = (current.maxOfOrNull { it.id } ?: 0) + 1
@@ -38,6 +52,10 @@ class GroupViewModel : ViewModel() {
         return newGroup
     }
 
+    /**
+     * Tambah pengeluaran (`expense`) ke grup dengan `groupId`.
+     * Jika grup ada, pengeluaran ditambahkan di depan daftar dan total diperbarui.
+     */
     fun addExpenseToGroup(groupId: Int, expense: com.example.fairsplit.DataModels.ExpenseModel) {
         val current = _groups.value.toMutableList()
         val index = current.indexOfFirst { it.id == groupId }
@@ -50,7 +68,7 @@ class GroupViewModel : ViewModel() {
             )
             current[index] = updatedGroup
             _groups.value = current
-            // if the updated group is currently selected, update the selectedGroup flow
+            // Jika grup yang diperbarui sedang dipilih, sinkronkan value selectedGroup
             if (_selectedGroup.value?.id == groupId) {
                 _selectedGroup.value = updatedGroup
             }

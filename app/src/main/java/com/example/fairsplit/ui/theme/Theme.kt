@@ -1,6 +1,9 @@
 package com.example.fairsplit.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+package com.example.fairsplit.ui.theme
+
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
@@ -15,66 +18,8 @@ import androidx.compose.ui.unit.sp
 import com.example.fairsplit.R
 
 
-// Colors for Light and Dark Themes
-val LightTextColor = Color(0xFF1C1B1F)  // Dark gray for text on light background
-val DarkTextColor = Color(0xFFF5F5F5)  // White for text on dark background
-val LightSecondaryTextColor = Color(0xFF616161)  // Medium gray for secondary text on light theme
-val DarkSecondaryTextColor = Color(0xFFB0B0B0)  // Light gray for secondary text on dark theme
-val HintTextColor = Color(0xFF9E9E9E)  // Lighter gray for hint/placeholder text
-val ErrorTextColor = Color(0xFFB00020)  // Red color for error messages
-val SuccessTextColor = Color(0xFF388E3C)  // Green color for success messages
-val LinkTextColor = Color(0xFF2196F3)  // Blue color for links
-
-
-
-//val LightPrimaryColor = Color(0xFF4D6A6D)      // Deep maroon
-//val LightSecondaryColor = Color(0xFFFFA552)    // Warm caramel
-//
-//// Subtly tinted near-whites — keep things clean but not sterile
-//val LightBackgroundColor = Color(0xFFF5F5F5)   // Near-white with a soft neutral beige/pink undertone
-//val LightSurfaceColor = Color(0xFFFFFFFF)      // Slight maroonish tint
-//
-//// Text/icon contrast
-//val LightOnPrimaryColor = Color.White
-//val LightOnSecondaryColor = Color(0xFF2B1A12)  // Better contrast on caramel
-//val LightOnBackgroundColor = Color(0xFF1F1F1F)
-//val LightOnSurfaceColor = Color(0xFF2A2A2A)
-//
-//// Dark Color scheme
-//val DarkPrimaryColor = Color(0xFF4D6A6D)       // Muted light version of maroon
-//val DarkSecondaryColor = Color(0xFFFFB866)     // Lighter warm orange
-//val DarkBackgroundColor = Color(0xFF121212)    // Standard deep dark
-//val DarkSurfaceColor = Color(0xFF1E1E1E)       // Slightly lighter surface
-//val DarkOnPrimaryColor = Color.Black           // Text on light maroon
-//val DarkOnSecondaryColor = Color.Black         // Text on light orange
-//val DarkOnBackgroundColor = Color(0xFFEDEDED)  // Light gray text
-//val DarkOnSurfaceColor = Color(0xFFDADADA)     // Soft light gray text
-
-
-//private val DarkColorScheme = darkColorScheme(
-//    primary = DarkPrimaryColor,
-//    secondary = DarkSecondaryColor,
-//    background = DarkBackgroundColor,
-//    surface = DarkSurfaceColor,
-//    onPrimary = DarkOnPrimaryColor,
-//    onSecondary = DarkOnSecondaryColor,
-//    onBackground = DarkOnBackgroundColor,
-//    onSurface = DarkOnSurfaceColor,
-//)
-//
-//private val LightColorScheme = lightColorScheme(
-//    primary = LightPrimaryColor,
-//    secondary = LightSecondaryColor,
-//    background = LightBackgroundColor,
-//    surface = LightSurfaceColor,
-//    onPrimary = LightOnPrimaryColor,
-//    onSecondary = LightOnSecondaryColor,
-//    onBackground = LightOnBackgroundColor,
-//    onSurface = LightOnSurfaceColor,
-//
-////    onSurfaceVariant = LightSecondaryTextColor
-//)
-
+// Warna dan tema aplikasi (Light / Dark)
+// Nilai-nilai di sini menentukan palet utama yang dipakai seluruh aplikasi.
 val DarkColorScheme = darkColorScheme(
     primary = Color(0xFF4D6A6D),
     onPrimary = Color.White,
@@ -130,8 +75,7 @@ val LightColorScheme = lightColorScheme(
 
 
 
-
-// Typography
+// Typography (poppins font family) digunakan di beberapa gaya teks khusus
 val poppinsFontFamily = FontFamily(
     Font(R.font.poppins_thin, FontWeight.Thin),       // 100
     Font(R.font.poppins_extralight, FontWeight.ExtraLight), // 200
@@ -209,6 +153,9 @@ val AppTypography = Typography(
 )
 
 
+/**
+ * Tema utama aplikasi yang memilih colorScheme dan typography berdasarkan preferensi.
+ */
 @Composable
 fun FairSplitTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
@@ -218,8 +165,7 @@ fun FairSplitTheme(
 
     MaterialTheme(
         colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme,
-//        colorScheme = LightColorScheme,
-        typography = AppTypography,  // Ensure your typography is set correctly
+        typography = AppTypography,
         content = content
     )
 }

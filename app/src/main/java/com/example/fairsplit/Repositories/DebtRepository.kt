@@ -3,12 +3,23 @@ package com.example.fairsplit.Repositories
 import com.example.fairsplit.DataModels.DebtRecordModel
 import com.example.fairsplit.DataModels.GroupModel
 
+/**
+ * Repository berisi logika perhitungan hutang berdasarkan pengeluaran dalam satu grup.
+ *
+ * Fungsi utama:
+ * - `calculateRawDebts` : mengubah setiap pengeluaran menjadi daftar hutang individual.
+ * - `simplifyDebts` : menyederhanakan daftar hutang menjadi transaksi minimal antar-orang.
+ * - utilitas lain untuk mengambil ringkasan dan perhitungan saldo.
+ */
 class DebtRepository {
 
+    /**
+     * Konversi daftar pengeluaran di grup menjadi `DebtRecordModel` mentah.
+     * Setiap pengeluaran dipisah menjadi beberapa catatan "si A berutang ke si B".
+     */
     fun calculateRawDebts(group: GroupModel): List<DebtRecordModel> {
         val debts = mutableListOf<DebtRecordModel>()
         val debtMap = mutableMapOf<Pair<String, String>, Double>()
-
 
         for (expense in group.expenseList) {
             val payer = expense.paidBy
@@ -25,6 +36,7 @@ class DebtRepository {
             }
         }
 
+        // Gabungkan hutang yang sama (owedTo, owedBy) menjadi jumlah total
         for (debt in debts) {
             val key = Pair(debt.owedTo, debt.owedBy)
             debtMap[key] = debtMap.getOrDefault(key, 0.0) + debt.amount
@@ -39,39 +51,40 @@ class DebtRepository {
         }
     }
 
+    /**
+     * Sederhanakan daftar hutang mentah menjadi transaksi minimal antara orang-orang.
+     * Algoritma:
+     * 1) Hitung saldo bersih tiap orang (positif = diterima, negatif = harus bayar).
+     * 2) Cocokkan mereka yang menerima dengan yang berutang untuk membuat transaksi minimal.
+     */
     fun simplifyDebts(debts: List<DebtRecordModel>): List<DebtRecordModel> {
-        // Map to store net balance for each person
         val netBalance = mutableMapOf<String, Double>()
 
-        // Step 1: Calculate the net balance for each person
+        // Hitung saldo bersih per orang
         for (debt in debts) {
-            // If someone owes someone else, subtract from their balance
             netBalance[debt.owedBy] = netBalance.getOrDefault(debt.owedBy, 0.0) - debt.amount
-            // If someone is owed money, add to their balance
             netBalance[debt.owedTo] = netBalance.getOrDefault(debt.owedTo, 0.0) + debt.amount
         }
 
-        // Step 2: Create a simplified list of transactions based on net balances
         val simplifiedDebts = mutableListOf<DebtRecordModel>()
 
-        // Step 3: Calculate the simplified debt relationships
-        val peopleOwing = netBalance.filter { it.value < 0.0 } // Those who owe money
-        val peopleOwed = netBalance.filter { it.value > 0.0 } // Those who are owed money
+        // Pisahkan orang yang berutang dan yang berhak menerima
+        val peopleOwing = netBalance.filter { it.value < 0.0 }
+        val peopleOwed = netBalance.filter { it.value > 0.0 }
 
-        // Step 4: Match those who owe with those who are owed
-        var sortedOwed = peopleOwed.toList().sortedByDescending { it.second } // Highest owed first
-        var sortedOwing = peopleOwing.toList().sortedBy { it.second } // Most negative first
+        var sortedOwed = peopleOwed.toList().sortedByDescending { it.second }
+        var sortedOwing = peopleOwing.toList().sortedBy { it.second }
 
         var i = 0
         var j = 0
 
-        // Step 5: Simplify debt by matching those who owe with those who are owed
+        // Cocokkan sampai salah satu list habis
         while (i < sortedOwed.size && j < sortedOwing.size) {
             val owedPerson = sortedOwed[i]
             val owingPerson = sortedOwing[j]
 
             val owedAmount = owedPerson.second
-            val owingAmount = -owingPerson.second // Amount owed (positive balance)
+            val owingAmount = -owingPerson.second
 
             val transactionAmount = minOf(owedAmount, owingAmount)
 
@@ -83,9 +96,9 @@ class DebtRepository {
                 )
             )
 
-            // Update the balances
+            // Update saldo yang tersisa setelah transaksi
             if (owedAmount == transactionAmount) {
-                i++ // Move to next person who is owed
+                i++
             } else {
                 sortedOwed = sortedOwed.toMutableList().apply {
                     this[i] = this[i].copy(second = owedAmount - transactionAmount)
@@ -93,7 +106,7 @@ class DebtRepository {
             }
 
             if (owingAmount == transactionAmount) {
-                j++ // Move to next person who owes
+                j++
             } else {
                 sortedOwing = sortedOwing.toMutableList().apply {
                     this[j] = this[j].copy(second = owingAmount - transactionAmount)
@@ -101,8 +114,12 @@ class DebtRepository {
             }
         }
 
-        return simplifiedDebts    }
+        return simplifiedDebts
+    }
 
+    /**
+     * Hitung saldo bersih per orang dari daftar `debts` mentah.
+     */
     fun calculateNetPerPerson(debts: List<DebtRecordModel>): Map<String, Double> {
         val netBalance = mutableMapOf<String, Double>()
 
